@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محمد & ألاء</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@200;300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ivory:#FAF7F0;--gold:#C9963A;--gold-light:#E8C97A;--gold-dark:#9A6F20;
+  --charcoal:#1E1A14;--warm-gray:#7A7268;--cream:#F2EDE0;
+  --rose:#8B3A52;--rose-light:#C4748A;
+}
+html{scroll-behavior:smooth;direction:rtl}
+body{background:var(--ivory);color:var(--charcoal);font-family:'Tajawal',sans-serif;overflow-x:hidden}
+
+body::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+section,div.section-wrap{position:relative;z-index:1}
+
+/* Hero */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:3rem 1.5rem;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 40%, #EEE5CC 0%, var(--ivory) 65%);
+}
+
+.hero-frame{
+  position:absolute;inset:20px;border:1px solid rgba(201,150,58,.18);pointer-events:none;z-index:0;
+}
+.hero-frame::before{
+  content:'';position:absolute;inset:8px;border:1px solid rgba(201,150,58,.08);
+}
+
+.corner{position:absolute;font-size:28px;color:var(--gold);opacity:.35;font-family:'Amiri',serif;line-height:1}
+.corner.tl{top:28px;right:28px}
+.corner.tr{top:28px;left:28px;transform:scaleX(-1)}
+.corner.bl{bottom:28px;right:28px;transform:scaleY(-1)}
+.corner.br{bottom:28px;left:28px;transform:scale(-1)}
+
+.eyebrow{
+  font-family:'Tajawal',sans-serif;font-size:clamp(11px,2vw,13px);letter-spacing:.2em;
+  color:var(--gold);font-weight:300;margin-bottom:1.5rem;opacity:0;
+}
+.couple-name{
+  font-family:'Amiri',serif;font-size:clamp(58px,11vw,120px);
+  font-weight:400;line-height:1.05;opacity:0;color:var(--charcoal);
+}
+.couple-name.bride{color:var(--rose)}
+.ampersand{
+  display:block;font-family:'Amiri',serif;font-style:italic;
+  font-size:clamp(30px,6vw,60px);color:var(--gold);margin:.15em 0;
+  font-weight:400;opacity:0;
+}
+.hero-divider{
+  width:200px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:1.5rem auto;opacity:0;
+}
+.bismillah{
+  font-family:'Amiri',serif;font-size:clamp(16px,3vw,22px);
+  color:var(--rose);opacity:0;margin-bottom:1rem;font-style:italic;
+}
+.date-line{
+  font-size:clamp(12px,2vw,14px);letter-spacing:.15em;
+  color:var(--warm-gray);opacity:0;font-weight:300;
+}
+.hero-cta{margin-top:2.5rem;opacity:0;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn{
+  font-family:'Tajawal',sans-serif;font-size:12px;letter-spacing:.15em;
+  padding:.85rem 2.2rem;border:1px solid;cursor:pointer;transition:all .3s;text-decoration:none;
+  display:inline-block;font-weight:400;
+}
+.btn-gold{background:var(--gold);color:#fff;border-color:var(--gold)}
+.btn-gold:hover{background:var(--gold-dark);border-color:var(--gold-dark)}
+.btn-outline{background:transparent;color:var(--charcoal);border-color:rgba(30,26,20,.4)}
+.btn-outline:hover{background:var(--charcoal);color:var(--ivory)}
+
+/* Music */
+.music-btn{
+  position:fixed;bottom:1.5rem;left:1.5rem;z-index:999;
+  width:50px;height:50px;border-radius:50%;
+  background:var(--gold);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  animation:pulse 2.5s infinite;transition:transform .2s;
+}
+.music-btn:hover{transform:scale(1.1)}
+.music-btn svg{width:18px;height:18px;fill:white}
+@keyframes pulse{
+  0%,100%{box-shadow:0 4px 18px rgba(201,150,58,.4),0 0 0 0 rgba(201,150,58,.35)}
+  50%{box-shadow:0 4px 18px rgba(201,150,58,.4),0 0 0 14px rgba(201,150,58,0)}
+}
+
+/* Animated lanterns */
+.lanterns{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.lantern{
+  position:absolute;animation:sway 3s ease-in-out infinite;
+  opacity:.12;font-size:24px;
+}
+.lantern:nth-child(1){top:10%;right:8%;animation-delay:0s}
+.lantern:nth-child(2){top:15%;left:10%;animation-delay:.8s}
+.lantern:nth-child(3){top:35%;right:5%;animation-delay:1.5s;font-size:18px}
+.lantern:nth-child(4){top:60%;left:6%;animation-delay:.4s;font-size:16px}
+.lantern:nth-child(5){top:75%;right:10%;animation-delay:2s;font-size:20px}
+@keyframes sway{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(5deg) translateY(-8px)}}
+
+/* Floating petals */
+@keyframes fall{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:0}
+  10%{opacity:.6}
+  90%{opacity:.2}
+  100%{transform:translateY(100vh) rotate(360deg);opacity:0}
+}
+.petal{
+  position:fixed;width:8px;height:8px;border-radius:50% 0 50% 0;
+  background:var(--rose-light);opacity:0;animation:fall linear infinite;pointer-events:none;z-index:0;
+}
+
+/* Section base */
+.section{padding:clamp(3.5rem,7vw,6rem) clamp(1.5rem,5vw,3rem);max-width:860px;margin:0 auto}
+.section-label{
+  font-family:'Tajawal',sans-serif;font-size:11px;letter-spacing:.25em;
+  color:var(--gold);margin-bottom:.75rem;display:block;font-weight:300;
+}
+.section-title{
+  font-family:'Amiri',serif;font-size:clamp(30px,5vw,48px);font-weight:400;
+  margin-bottom:1.25rem;line-height:1.3;
+}
+.gold-line{width:60px;height:1px;background:var(--gold);margin:1.25rem auto}
+
+/* Events cards */
+.events-bg{background:var(--charcoal);padding:clamp(3rem,6vw,5rem) 1.5rem;text-align:center}
+.events-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:680px;margin:2.5rem auto 0}
+.event-card{
+  border:1px solid rgba(201,150,58,.3);padding:2.5rem 1.5rem;position:relative;overflow:hidden;
+}
+.event-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.event-icon{font-size:2.2rem;margin-bottom:1rem;display:block;color:var(--gold)}
+.event-card h3{
+  font-family:'Amiri',serif;font-size:clamp(22px,4vw,30px);color:var(--gold-light);
+  margin-bottom:.5rem;
+}
+.event-card p{color:rgba(250,247,240,.65);font-size:.9rem;line-height:1.8;font-weight:300}
+.event-date{
+  display:inline-block;margin-top:1rem;
+  font-family:'Tajawal',sans-serif;font-size:11px;letter-spacing:.15em;
+  color:var(--gold);border:1px solid rgba(201,150,58,.35);padding:.4rem 1rem;
+}
+
+/* Countdown */
+.countdown-wrap{
+  background:var(--rose);padding:clamp(3rem,5vw,4.5rem) 1.5rem;text-align:center;
+}
+.countdown-title{font-family:'Amiri',serif;font-size:clamp(20px,4vw,32px);color:var(--ivory);margin-bottom:.5rem}
+.countdown-sub{color:rgba(250,247,240,.65);font-size:.85rem;font-weight:300;margin-bottom:2rem}
+.countdown-grid{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.count-block{text-align:center;min-width:70px}
+.count-num{
+  display:block;font-family:'Amiri',serif;font-size:clamp(44px,8vw,72px);
+  font-weight:400;color:var(--ivory);line-height:1;
+}
+.count-label{
+  display:block;font-family:'Tajawal',sans-serif;font-size:10px;letter-spacing:.2em;
+  color:rgba(250,247,240,.55);margin-top:.3rem;font-weight:300;
+}
+.count-sep{font-size:clamp(30px,5vw,50px);color:rgba(250,247,240,.35);line-height:1.2;padding-top:.1em}
+
+/* Details */
+.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem}
+.detail-card{
+  padding:2rem 1.5rem;border:1px solid rgba(201,150,58,.2);
+  position:relative;text-align:center;
+}
+.detail-card::after{
+  content:'';position:absolute;bottom:0;left:1.5rem;right:1.5rem;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.3;
+}
+.detail-icon{font-size:1.8rem;color:var(--gold);margin-bottom:.75rem;display:block}
+.detail-card h3{
+  font-family:'Amiri',serif;font-size:1.15rem;margin-bottom:.5rem;color:var(--charcoal);
+}
+.detail-card p{font-size:.88rem;color:var(--warm-gray);line-height:1.8;font-weight:300}
+
+/* Map btn */
+.map-btn{
+  display:inline-flex;align-items:center;gap:.4rem;margin-top:.75rem;
+  font-family:'Tajawal',sans-serif;font-size:11px;letter-spacing:.1em;
+  color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,150,58,.4);
+  padding-bottom:.15rem;transition:color .2s;cursor:pointer;
+  background:none;border-left:none;border-right:none;border-top:none;
+}
+.map-btn:hover{color:var(--gold-dark)}
+
+/* RSVP */
+.rsvp-section{background:var(--charcoal);padding:clamp(3.5rem,7vw,6rem) 1.5rem;text-align:center}
+.rsvp-form{max-width:480px;margin:2.5rem auto 0;text-align:right}
+.form-group{margin-bottom:1.25rem}
+.form-group label{
+  display:block;font-family:'Tajawal',sans-serif;font-size:11px;letter-spacing:.15em;
+  color:var(--gold);margin-bottom:.5rem;font-weight:300;
+}
+.form-group input,.form-group select{
+  width:100%;padding:.85rem 1.1rem;background:rgba(250,247,240,.06);
+  border:1px solid rgba(201,150,58,.22);color:var(--ivory);
+  font-family:'Tajawal',sans-serif;font-size:.95rem;outline:none;
+  transition:border-color .2s;direction:rtl;
+}
+.form-group input::placeholder{color:rgba(250,247,240,.3)}
+.form-group input:focus,.form-group select:focus{border-color:var(--gold)}
+.form-group select option{background:var(--charcoal)}
+.attendance-toggle{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.toggle-btn{
+  padding:.85rem;border:1px solid rgba(201,150,58,.25);background:transparent;
+  color:rgba(250,247,240,.55);font-family:'Tajawal',sans-serif;font-size:12px;
+  letter-spacing:.1em;cursor:pointer;transition:all .25s;
+}
+.toggle-btn.active{background:var(--gold);border-color:var(--gold);color:white}
+.rsvp-submit{
+  width:100%;padding:1rem;background:var(--gold);border:none;color:white;
+  font-family:'Tajawal',sans-serif;font-size:13px;letter-spacing:.15em;
+  cursor:pointer;transition:background .2s;margin-top:.5rem;
+}
+.rsvp-submit:hover{background:var(--gold-dark)}
+.rsvp-thanks{
+  display:none;padding:2.5rem 1rem;color:var(--ivory);
+  font-family:'Amiri',serif;font-size:1.25rem;line-height:1.9;
+}
+
+/* Admin */
+.admin-panel{
+  position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(30,26,20,.97);
+  z-index:9999;display:none;align-items:center;justify-content:center;
+}
+.admin-card{background:var(--ivory);padding:2.5rem;max-width:440px;width:90%;text-align:center}
+.admin-stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+.stat-box{padding:1.25rem;border:1px solid rgba(201,150,58,.3)}
+.stat-num{font-family:'Amiri',serif;font-size:2.8rem;font-weight:400;color:var(--gold)}
+.stat-label{font-family:'Tajawal',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--warm-gray);margin-top:.2rem}
+.admin-guest-list{text-align:right;max-height:180px;overflow-y:auto;margin-top:1rem}
+.guest-row{padding:.45rem 0;border-bottom:1px solid rgba(201,150,58,.12);font-size:.85rem;display:flex;justify-content:space-between;gap:1rem}
+.guest-row span:last-child{color:var(--gold);white-space:nowrap}
+.admin-pw{
+  width:100%;padding:.75rem 1rem;border:1px solid rgba(201,150,58,.3);
+  font-family:'Tajawal',sans-serif;font-size:.95rem;outline:none;margin-bottom:.75rem;
+  background:white;direction:rtl;
+}
+.admin-close{position:absolute;top:1rem;left:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--ivory)}
+
+/* Footer */
+.footer{padding:2.5rem 1.5rem;text-align:center;border-top:1px solid rgba(201,150,58,.18)}
+.footer-names{font-family:'Amiri',serif;font-size:1.6rem;color:var(--gold)}
+.footer-note{font-family:'Tajawal',sans-serif;font-size:.75rem;color:var(--warm-gray);margin-top:.5rem;font-weight:300}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(25px);transition:opacity .8s ease, transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Floral divider */
+.floral-div{
+  text-align:center;color:var(--gold);opacity:.45;font-size:1.3rem;
+  letter-spacing:.5rem;padding:1rem 0;font-family:'Amiri',serif;
+}
+
+@media(max-width:600px){
+  .events-grid,.details-grid{grid-template-columns:1fr}
+  .couple-name{font-size:clamp(50px,14vw,80px)}
+}
+</style>
+</head>
+<body>
+
+<!-- Petals -->
+<div class="petal" style="left:5%;animation-duration:8s;animation-delay:0s"></div>
+<div class="petal" style="left:20%;animation-duration:10s;animation-delay:2s;width:6px;height:6px"></div>
+<div class="petal" style="left:40%;animation-duration:7s;animation-delay:4s"></div>
+<div class="petal" style="left:65%;animation-duration:9s;animation-delay:1s;width:5px;height:5px"></div>
+<div class="petal" style="left:80%;animation-duration:11s;animation-delay:3s"></div>
+<div class="petal" style="left:90%;animation-duration:8s;animation-delay:6s;width:7px;height:7px"></div>
+
+<!-- Music -->
+<button class="music-btn" id="musicBtn" aria-label="تشغيل الموسيقى">
+  <svg id="musicIcon" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+</button>
+
+<!-- Admin -->
+<div class="admin-panel" id="adminPanel" role="dialog">
+  <button class="admin-close" onclick="closeAdmin()">✕</button>
+  <div class="admin-card" id="adminLogin">
+    <h2 style="font-family:'Amiri',serif;font-size:1.8rem;margin-bottom:1rem">لوحة الإدارة</h2>
+    <p style="color:var(--warm-gray);margin-bottom:1.5rem;font-size:.9rem">أدخل كلمة المرور</p>
+    <input type="password" class="admin-pw" id="adminPw" placeholder="كلمة المرور" />
+    <button class="rsvp-submit" onclick="checkAdmin()">دخول</button>
+    <p id="adminErr" style="color:#c0392b;font-size:.85rem;margin-top:.5rem"></p>
+  </div>
+  <div class="admin-card" id="adminDash" style="display:none">
+    <h2 style="font-family:'Amiri',serif;font-size:1.6rem;margin-bottom:.5rem">قائمة المدعوين</h2>
+    <div class="admin-stats">
+      <div class="stat-box"><div class="stat-num" id="confirmedCount">0</div><div class="stat-label">سيحضر</div></div>
+      <div class="stat-box"><div class="stat-num" id="declinedCount">0</div><div class="stat-label">اعتذر</div></div>
+    </div>
+    <div class="admin-guest-list" id="guestList"></div>
+    <button class="rsvp-submit" style="margin-top:1.5rem" onclick="closeAdmin()">إغلاق</button>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-frame" aria-hidden="true"></div>
+  <div class="lanterns" aria-hidden="true">
+    <span class="lantern">🪔</span><span class="lantern">🕯️</span>
+    <span class="lantern">🌸</span><span class="lantern">🌺</span><span class="lantern">🪔</span>
+  </div>
+  <div class="corner tl" aria-hidden="true">❧</div>
+  <div class="corner tr" aria-hidden="true">❧</div>
+  <div class="corner bl" aria-hidden="true">❦</div>
+  <div class="corner br" aria-hidden="true">❦</div>
+
+  <div style="margin-bottom:1.2rem;opacity:0" id="heroHeart">
+    <svg style="animation:heartbeat 1.4s ease-in-out infinite;width:50px;height:50px" viewBox="0 0 60 60">
+      <path d="M30 50 C30 50 8 35 8 20 C8 13 13.5 8 20 8 C24.5 8 28.5 10.5 30 14 C31.5 10.5 35.5 8 40 8 C46.5 8 52 13 52 20 C52 35 30 50 30 50Z" fill="none" stroke="var(--rose)" stroke-width="1.5"/>
+    </svg>
+    <style>@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.1)}60%{transform:scale(1)}}</style>
+  </div>
+
+  <p class="bismillah" id="heroBismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+  <p class="eyebrow" id="heroEyebrow">يُسعدان بدعوتكم لحضور حفل زفافهما</p>
+
+  <h1 class="couple-name" id="heroName1">محمد</h1>
+  <span class="ampersand" id="heroAmp">&amp;</span>
+  <h1 class="couple-name bride" id="heroName2">ألاء</h1>
+
+  <div class="hero-divider" id="heroDivider"></div>
+  <div class="floral-div" id="heroFloral" style="opacity:0">✦ ❈ ✦</div>
+
+  <p class="date-line" id="heroDate">يونيو ٢٠٢٦ · قاعة ريونا</p>
+
+  <div class="hero-cta" id="heroCta">
+    <a href="#events" class="btn btn-gold">تفاصيل الحفل</a>
+    <a href="#rsvp" class="btn btn-outline">تأكيد الحضور</a>
+  </div>
+</section>
+
+<!-- Events -->
+<div class="events-bg" id="events">
+  <span class="section-label" style="color:var(--gold-light)">موعد الاحتفال</span>
+  <h2 style="font-family:'Amiri',serif;font-size:clamp(26px,5vw,40px);color:var(--ivory);font-weight:400">ليلتان من الفرح والبهجة</h2>
+  <div class="events-grid">
+    <div class="event-card reveal">
+      <span class="event-icon">🌿</span>
+      <h3>ليلة الحنة</h3>
+      <p>احتفال العروس وليلة الحنة<br>مع الأهل والأحباب</p>
+      <span class="event-date">الثلاثاء · ٩ يونيو ٢٠٢٦</span>
+    </div>
+    <div class="event-card reveal">
+      <span class="event-icon">💍</span>
+      <h3>حفل الزفاف</h3>
+      <p>ليلة الفرح والاحتفال<br>بمناسبة زواج محمد وألاء</p>
+      <span class="event-date">الخميس · ١١ يونيو ٢٠٢٦</span>
+    </div>
+  </div>
+</div>
+
+<!-- Countdown -->
+<div class="countdown-wrap" id="countdown">
+  <h2 class="countdown-title">العد التنازلي لحفل الزفاف</h2>
+  <p class="countdown-sub">الخميس ١١ يونيو ٢٠٢٦ · قاعة ريونا</p>
+  <div class="countdown-grid">
+    <div class="count-block"><span class="count-num" id="cd-days">00</span><span class="count-label">يوم</span></div>
+    <div class="count-sep">:</div>
+    <div class="count-block"><span class="count-num" id="cd-hours">00</span><span class="count-label">ساعة</span></div>
+    <div class="count-sep">:</div>
+    <div class="count-block"><span class="count-num" id="cd-mins">00</span><span class="count-label">دقيقة</span></div>
+    <div class="count-sep">:</div>
+    <div class="count-block"><span class="count-num" id="cd-secs">00</span><span class="count-label">ثانية</span></div>
+  </div>
+</div>
+
+<!-- Details -->
+<section>
+  <div class="section" style="text-align:center">
+    <span class="section-label reveal">تفاصيل الحفل</span>
+    <h2 class="section-title reveal">كل ما تحتاج معرفته</h2>
+    <div class="gold-line"></div>
+    <div class="details-grid">
+      <div class="detail-card reveal">
+        <span class="detail-icon">🌿</span>
+        <h3>ليلة الحنة</h3>
+        <p>الثلاثاء ٩ يونيو ٢٠٢٦<br>ابتداءً من المساء<br>للأهل والمدعوين</p>
+      </div>
+      <div class="detail-card reveal">
+        <span class="detail-icon">💍</span>
+        <h3>حفل الزفاف</h3>
+        <p>الخميس ١١ يونيو ٢٠٢٦<br>ابتداءً من المساء<br>الزي الرسمي مُستحسن</p>
+      </div>
+      <div class="detail-card reveal" style="grid-column:1/-1">
+        <span class="detail-icon">📍</span>
+        <h3>قاعة ريونا</h3>
+        <p>يسعدنا استقبالكم في قاعة ريونا<br>لمشاركتنا أجمل لحظات حياتنا</p>
+        <button class="map-btn" onclick="openMap()">↗ فتح الموقع على الخريطة</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="floral-div" style="opacity:.35;font-size:1.5rem">✦ ❈ ✦ ❈ ✦</div>
+
+<!-- RSVP -->
+<div class="rsvp-section" id="rsvp">
+  <span class="section-label" style="color:var(--gold-light)">الرد بحلول الأول من يونيو</span>
+  <h2 style="font-family:'Amiri',serif;font-size:clamp(26px,5vw,40px);color:var(--ivory);font-weight:400">هل ستنضم إلينا؟</h2>
+  <p style="color:rgba(250,247,240,.55);font-size:.9rem;margin-top:.5rem;font-weight:300">يُسعدنا تأكيد حضوركم معنا</p>
+
+  <div class="rsvp-form" id="rsvpForm">
+    <div class="form-group">
+      <label>الاسم الكامل</label>
+      <input type="text" id="rsvpName" placeholder="اكتب اسمك هنا" />
+    </div>
+    <div class="form-group">
+      <label>أيّ الحفلين ستحضر؟</label>
+      <select id="rsvpEvent">
+        <option value="both">الحنة والزفاف معاً</option>
+        <option value="henna">ليلة الحنة فقط (٩ يونيو)</option>
+        <option value="wedding">حفل الزفاف فقط (١١ يونيو)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>تأكيد الحضور</label>
+      <div class="attendance-toggle">
+        <button class="toggle-btn active" id="btnGoing" onclick="setAttendance('going')">بكل سرور ✓</button>
+        <button class="toggle-btn" id="btnNotGoing" onclick="setAttendance('notgoing')">مع الأسف ✗</button>
+      </div>
+    </div>
+    <div class="form-group" id="guestNumGroup">
+      <label>عدد الضيوف</label>
+      <select id="rsvpGuests">
+        <option value="1">١ ضيف</option>
+        <option value="2" selected>٢ ضيوف</option>
+        <option value="3">٣ ضيوف</option>
+        <option value="4">٤ ضيوف</option>
+        <option value="5">٥ ضيوف أو أكثر</option>
+      </select>
+    </div>
+    <button class="rsvp-submit" onclick="submitRsvp()">إرسال التأكيد</button>
+    <p id="rsvpMsg" style="margin-top:1rem;text-align:center;font-style:italic;font-family:'Amiri',serif;color:var(--gold)"></p>
+  </div>
+
+  <div class="rsvp-thanks" id="rsvpThanks">
+    <p style="font-size:2rem;color:var(--gold)">✦</p>
+    <p style="margin-top:.75rem;color:var(--ivory)">شكراً لك، <span id="thanksName" style="color:var(--gold-light)"></span></p>
+    <p style="font-size:1rem;color:rgba(250,247,240,.6);margin-top:.5rem">نتطلع إلى لقائك في هذه المناسبة السعيدة 🌸</p>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p class="footer-names">محمد &amp; ألاء</p>
+  <p class="footer-note">يونيو ٢٠٢٦ · قاعة ريونا</p>
+  <p style="margin-top:1.5rem;font-family:'Amiri',serif;font-size:.9rem;color:rgba(122,114,104,.5);font-style:italic">
+    وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا
+  </p>
+  <button onclick="openAdmin()" style="background:none;border:none;color:rgba(122,114,104,.3);cursor:pointer;font-size:.7rem;margin-top:.5rem;font-family:'Tajawal',sans-serif">إدارة</button>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const tl = gsap.timeline({delay:.4});
+tl.to('#heroHeart',{opacity:1,duration:.6,ease:'power2.out'})
+  .to('#heroBismillah',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.2')
+  .to('#heroEyebrow',{opacity:1,y:0,duration:.7,ease:'power3.out'},'-=.3')
+  .to('#heroName1',{opacity:1,y:0,duration:.9,ease:'power3.out'},'-=.3')
+  .to('#heroAmp',{opacity:1,duration:.5},'-=.4')
+  .to('#heroName2',{opacity:1,y:0,duration:.9,ease:'power3.out'},'-=.5')
+  .to('#heroDivider',{opacity:1,duration:.8},'-=.3')
+  .to('#heroFloral',{opacity:.45,duration:.6},'-=.4')
+  .to('#heroDate',{opacity:1,y:0,duration:.7},'-=.3')
+  .to('#heroCta',{opacity:1,y:0,duration:.7},'-=.4');
+
+const reveals = document.querySelectorAll('.reveal');
+reveals.forEach(el=>{
+  ScrollTrigger.create({
+    trigger:el,start:'top 88%',
+    onEnter:()=>el.classList.add('visible')
+  });
+});
+
+// Countdown to wedding June 11, 2026
+const weddingDate = new Date('2026-06-11T18:00:00');
+function updateCountdown(){
+  let diff = weddingDate - new Date();
+  if(diff<0)diff=0;
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
+}
+updateCountdown();setInterval(updateCountdown,1000);
+
+// Music
+let audioCtx,gainNode,source,playing=false;
+function toggleMusic(){
+  if(!audioCtx){
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    gainNode=audioCtx.createGain();gainNode.gain.value=0.15;gainNode.connect(audioCtx.destination);
+    fetch('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3')
+      .then(r=>r.arrayBuffer()).then(b=>audioCtx.decodeAudioData(b))
+      .then(buf=>{
+        source=audioCtx.createBufferSource();source.buffer=buf;source.loop=true;
+        source.connect(gainNode);source.start();playing=true;updateIcon();
+      }).catch(()=>{});
+    return;
+  }
+  if(playing){gainNode.gain.linearRampToValueAtTime(0,audioCtx.currentTime+.5);setTimeout(()=>audioCtx.suspend(),500);playing=false;}
+  else{audioCtx.resume();gainNode.gain.linearRampToValueAtTime(0.15,audioCtx.currentTime+.3);playing=true;}
+  updateIcon();
+}
+function updateIcon(){
+  document.getElementById('musicIcon').innerHTML=playing
+    ?'<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+    :'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>';
+}
+document.getElementById('musicBtn').addEventListener('click',toggleMusic);
+
+// RSVP
+let attendance='going';
+const rsvpData=[];
+function setAttendance(v){
+  attendance=v;
+  document.getElementById('btnGoing').classList.toggle('active',v==='going');
+  document.getElementById('btnNotGoing').classList.toggle('active',v==='notgoing');
+  document.getElementById('guestNumGroup').style.display=v==='going'?'block':'none';
+}
+function submitRsvp(){
+  const name=document.getElementById('rsvpName').value.trim();
+  if(!name){document.getElementById('rsvpMsg').textContent='الرجاء كتابة اسمك';return;}
+  const event=document.getElementById('rsvpEvent').value;
+  const guests=parseInt(document.getElementById('rsvpGuests').value)||1;
+  rsvpData.push({name,attendance,event,guests:attendance==='going'?guests:0});
+  document.getElementById('rsvpForm').style.display='none';
+  document.getElementById('rsvpThanks').style.display='block';
+  document.getElementById('thanksName').textContent=name;
+  gsap.from('#rsvpThanks',{opacity:0,y:20,duration:.8});
+}
+
+// Admin
+function openAdmin(){document.getElementById('adminPanel').style.display='flex'}
+function closeAdmin(){
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('adminPw').value='';
+  document.getElementById('adminErr').textContent='';
+  document.getElementById('adminLogin').style.display='block';
+  document.getElementById('adminDash').style.display='none';
+}
+function checkAdmin(){
+  if(document.getElementById('adminPw').value==='reyona2026'){
+    document.getElementById('adminLogin').style.display='none';
+    document.getElementById('adminDash').style.display='block';
+    const confirmed=rsvpData.filter(r=>r.attendance==='going');
+    document.getElementById('confirmedCount').textContent=confirmed.reduce((s,r)=>s+r.guests,0);
+    document.getElementById('declinedCount').textContent=rsvpData.filter(r=>r.attendance==='notgoing').length;
+    const list=document.getElementById('guestList');
+    list.innerHTML=rsvpData.length
+      ?rsvpData.map(r=>`<div class="guest-row"><span>${r.name}</span><span>${r.attendance==='going'?'✓ حاضر':'✗ معتذر'}</span></div>`).join('')
+      :'<p style="color:var(--warm-gray);text-align:center;padding:1rem;font-size:.85rem">لا يوجد ردود حتى الآن</p>';
+  }else{document.getElementById('adminErr').textContent='كلمة المرور غير صحيحة'}
+}
+function openMap(){window.open('https://maps.google.com/?q=قاعة+ريونا','_blank')}
+</script>
+</body>
+</html>
